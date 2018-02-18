@@ -1,0 +1,46 @@
+{
+  "name": "spy-middleware",
+  "version": "1.0.0",
+  "description": "a redux middleware for spying actions",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drpicox/spy-middleware.git"
+  },
+  "keywords": [
+    "redux",
+    "middleware",
+    "createStore",
+    "spy",
+    "testing",
+    "applyMiddleware"
+  ],
+  "author": "David Rodenas <david.rodenas@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drpicox/spy-middleware/issues"
+  },
+  "homepage": "https://github.com/drpicox/spy-middleware#readme",
+  "devDependencies": {
+    "eslint-plugin-prettier": "^2.5.0",
+    "husky": "^0.14.3",
+    "jest": "^22.1.4",
+    "lint-staged": "^6.1.0",
+    "prettier": "^1.10.2",
+    "redux": "^3.7.2"
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "trailingComma": "es5",
+    "singleQuote": true
+  }
+}
