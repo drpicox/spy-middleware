@@ -38,7 +38,7 @@ beforeEach(() => {
   store = createStore(reducer, applyMiddleware(middleware, spyMiddleware))
 })
 
-test("setTimeout logs correctly", async () => {
+test("when a fetchTopic is requested it retrieves the topic from the REST service", async () => {
   fetch.mockResponse('This is the readme')
   store.dispatch(fetchTopic('README'))
 
