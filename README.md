@@ -65,6 +65,7 @@ beforeEach(() => {
 })
 ```
 
+
 spyMiddleware
 -------------
 
@@ -77,7 +78,7 @@ beforeEach(() => {
 })
 ```
 
-### spyMiddleware.getActions(): Action[]
+### ### spyMiddleware.getActions(): Action[]
 
 Get all dispatched and reduced actions.
 
@@ -90,7 +91,7 @@ const actions = spyMiddleware.getActions()
 expect(actions).toEqual([startAction, stopAction, resumeAction])
 ```
 
-### spyMiddleware.getAction(string|regExp|(action)=>bool): Action[]
+### ### spyMiddleware.getAction(string|regExp|(action)=>bool): Action
 
 Get the last action that satisfies the condition or undefined if none.
 
@@ -103,7 +104,7 @@ const foundAction = spyMiddleware.getAction(/^S/i)
 expect(foundAction).toBe(stopAction)
 ```
 
-### spyMiddleware.untilNext(string|regExp|(action)=>bool): Promise
+### ### spyMiddleware.untilNext(string|regExp|(action)=>bool): Promise<Action>
 
 Returns a promise which is resolved when the matching action
 is dispatched and reduced.
@@ -121,7 +122,19 @@ expect(actionsBeforeAwait).toEqual([])
 expect(actionsAfterAwait).toEqual([startAction])
 ```
 
-### spyMiddleware.until(string|regExp|(action)=>bool): Promise
+The promise is resolved with the first action
+fired after `untilNext` call
+that satisfies the condition.
+
+```javascript
+delay(1).then(() => store.dispatch(startAction))
+const foundStartAction = await spyMiddleware.untilNext(START)
+
+expect(foundStartAction).toBe(startAction)
+```
+
+
+### ### spyMiddleware.until(string|regExp|(action)=>bool): Promise<Action>
 
 Returns a promise which is resolved when the matching action
 is dispatched and reduced or if a matching action was resolved in the past.
@@ -152,4 +165,16 @@ await untilNextFinished
 
 expect(actionFoundByUntil).toBe(startAction)
 expect(actionFoundByUntilNext).toBe(stopAction)
+```
+
+
+The promise is resolved with the first action
+ever dispatched
+that satisfies the condition.
+
+```javascript
+store.dispatch(startAction)
+const foundStartAction = await spyMiddleware.untilNext(START)
+
+expect(foundStartAction).toBe(startAction)
 ```

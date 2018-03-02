@@ -139,6 +139,14 @@ describe('makeSpyMiddleware', () => {
     expect(secondAction).toBe(stopAction)
   })
 
+  test('untilNext resolves the promise with the first action found after the call that satisfies the condition', async () => {
+    store.dispatch(startAction)
+    delay(1).then(() => store.dispatch(stopAction))
+    const matchingAction = await spyMiddleware.untilNext(/^S/)
+
+    expect(matchingAction).toBe(stopAction)
+  })
+
   test('until works almost equal to untilNext', async () => {
     let actionsBeforeAwait
     let actionsAfterAwait
@@ -180,8 +188,16 @@ describe('makeSpyMiddleware', () => {
     expect(actionFoundByUntilNext).toBe(stopAction)
   })
 
-  test('until next also matches regExp', async () => {
+  test('until also matches regExp', async () => {
     store.dispatch(startAction)
     await spyMiddleware.until(/^S/)
+  })
+
+  test('until resolves the promise with the first action ever dispatched that satisfies the condition', async () => {
+    store.dispatch(startAction)
+    delay(1).then(() => store.dispatch(stopAction))
+    const matchingAction = await spyMiddleware.until(/^S/)
+
+    expect(matchingAction).toBe(startAction)
   })
 })

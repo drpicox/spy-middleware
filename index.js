@@ -68,7 +68,7 @@ function makeSpyMiddleware() {
         })
 
         actives.forEach(function resolveUntil(until) {
-          until.resolve()
+          until.resolve(action)
         })
         untils = inactives
       }
