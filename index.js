@@ -36,6 +36,10 @@ function makeSpyMiddleware() {
         .find(match)
     }
 
+    function clearActions() {
+      actions = []
+    }
+
     function until(cond) {
       var action = getAction(cond)
       if (action) return Promise.resolve(action)
@@ -52,6 +56,7 @@ function makeSpyMiddleware() {
 
     spyMiddleware.getActions = getActions
     spyMiddleware.getAction = getAction
+    spyMiddleware.clearActions = clearActions
     spyMiddleware.until = until
     spyMiddleware.untilNext = untilNext
 

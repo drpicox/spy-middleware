@@ -13,14 +13,23 @@ describe('makeSpyMiddleware', () => {
 
   let spyMiddleware
   let store
+  let delays
+
   beforeEach(() => {
+    delays = []
     const reducer = (state = [], action) => state.concat([action])
     spyMiddleware = makeSpyMiddleware()
     store = createStore(reducer, applyMiddleware(spyMiddleware))
   })
 
+  afterEach(async () => {
+    await Promise.all(delays)
+  })
+
   function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
+    const promise = new Promise(resolve => setTimeout(resolve, ms))
+    delays.push(promise)
+    return promise
   }
 
   test('the example store that saves all received actions in order in the state', () => {
@@ -199,5 +208,28 @@ describe('makeSpyMiddleware', () => {
     const matchingAction = await spyMiddleware.until(/^S/)
 
     expect(matchingAction).toBe(startAction)
+  })
+
+  test('you can clear the list of tracked actions', () => {
+    store.dispatch(startAction)
+    store.dispatch(stopAction)
+
+    spyMiddleware.clearActions()
+
+    store.dispatch(resumeAction)
+
+    const actions = spyMiddleware.getActions()
+
+    expect(actions).toEqual([resumeAction])
+  })
+
+  test('until does not consider actions dispatched before last clear', async () => {
+    store.dispatch(stopAction)
+    spyMiddleware.clearActions()
+
+    delay(1).then(() => store.dispatch(startAction))
+    const action = await spyMiddleware.until(/.*/)
+
+    expect(action).toEqual(startAction)
   })
 })
