@@ -178,3 +178,20 @@ const foundStartAction = await spyMiddleware.untilNext(START)
 
 expect(foundStartAction).toBe(startAction)
 ```
+
+### ### spyMiddleware.clearActions(): void
+
+Clears the list of dispatched actions.
+
+```javascript
+store.dispatch(startAction)
+store.dispatch(stopAction)
+
+spyMiddleware.clearActions()
+
+store.dispatch(resumeAction)
+
+const actions = spyMiddleware.getActions()
+
+expect(actions).toEqual([resumeAction])
+```
