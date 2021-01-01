@@ -1,6 +1,6 @@
 {
   "name": "spy-middleware",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "a redux middleware for spying actions",
   "main": "index.js",
   "scripts": {
